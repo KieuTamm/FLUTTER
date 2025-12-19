@@ -8,6 +8,7 @@ import 'feedback.dart';
 import 'news_screen.dart';
 import 'auth_screen.dart';
 import 'booking.dart';
+import 'profile.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -59,8 +60,9 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
+        // SỬA TẠI ĐÂY: Nếu là trang Profile (index 8) thì ẩn tiêu đề chữ
         title: Text(
-          _titles[_selectedIndex],
+          _selectedIndex == 8 ? "" : _titles[_selectedIndex],
           style: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w900,
@@ -100,135 +102,13 @@ class _MyHomePageState extends State<MyHomePage> {
       case 7:
         return const BookingScreen();
       case 8:
-        return _buildProfileScreen();
+        return UserProfilePage(
+          onLogout: _handleLogout,
+          userName: _isLoggedIn ? _userName : "KHÁCH",
+        );
       default:
         return const OverviewScreen();
     }
-  }
-
-  Widget _buildProfileScreen() {
-    if (!_isLoggedIn) return AuthScreen(onLoginSuccess: _onLoginSuccess);
-
-    return SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Column(
-        children: [
-          const SizedBox(height: 30),
-          Center(
-            child: Container(
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.black12, width: 1),
-              ),
-              child: const CircleAvatar(
-                radius: 50,
-                backgroundColor: Colors.black,
-                child: Icon(Icons.face_rounded, size: 50, color: Colors.white),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            _userName,
-            style: const TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.w900,
-              letterSpacing: 1,
-            ),
-          ),
-          const Text(
-            "kieutamngovo3325@gmail.com",
-            style: TextStyle(color: Colors.grey, fontSize: 13),
-          ),
-          const SizedBox(height: 40),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.02),
-                  blurRadius: 15,
-                  offset: const Offset(0, 5),
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                _buildProfileInfoRow(
-                  Icons.verified_user_outlined,
-                  "Vai trò",
-                  "Thành viên",
-                ),
-                _buildProfileInfoRow(
-                  Icons.calendar_today_outlined,
-                  "Tham gia",
-                  "12/2025",
-                ),
-                _buildProfileInfoRow(
-                  Icons.settings_outlined,
-                  "Cài đặt",
-                  "",
-                  isLast: true,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 40),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: _handleLogout,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 18),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                elevation: 0,
-              ),
-              child: const Text(
-                "ĐĂNG XUẤT",
-                style: TextStyle(fontWeight: FontWeight.w900),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildProfileInfoRow(
-    IconData icon,
-    String label,
-    String value, {
-    bool isLast = false,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        border: isLast
-            ? null
-            : Border(bottom: BorderSide(color: Colors.grey.withOpacity(0.05))),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, size: 20, color: Colors.black87),
-          const SizedBox(width: 15),
-          Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
-          const Spacer(),
-          Text(
-            value,
-            style: const TextStyle(
-              color: Colors.black54,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
-    );
   }
 
   Widget _buildDrawer() {
