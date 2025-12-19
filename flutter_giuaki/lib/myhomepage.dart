@@ -60,7 +60,6 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.black),
-        // SỬA TẠI ĐÂY: Nếu là trang Profile (index 8) thì ẩn tiêu đề chữ
         title: Text(
           _selectedIndex == 8 ? "" : _titles[_selectedIndex],
           style: const TextStyle(
